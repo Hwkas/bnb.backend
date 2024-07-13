@@ -1,0 +1,41 @@
+
+
+services:
+  api:
+    build: ./bnb.backend
+    command: python manage.py runserver 0.0.0.0:8000
+    # mounting all the file in bnb.backend to app dir as my workdir for docker is app
+    volumes:
+      - ./bnb.backend:/app
+    ports:
+      - 8000:8000
+    env_file:
+      - ./bnb.backend/.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:16.3-alpine3.18
+    # mounting the below created volume to /var/lib/postgresql/data/,
+    # as in linux this is the place where postgresql fetches its data from.
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./bnb.backend/.env.dev
+  # ui:
+  #   build: ./bnb.frontend
+  #   command: npm run dev
+  #   # mounting all the file in bnb.frontend to app dir as my workdir for docker is app
+  #   volumes:
+  #     - ./bnb.frontend:/app
+  #   ports:
+  #     - 3000:3000
+
+
+# here creating a docker volume
+volumes:
+  postgres_data:
+
+
+# docker container rm -f $(docker container ls -aq)
+# docker-compose exec api python manage.py migrate
+# docker-compose exec api cat -v -e entrypoint.sh | head -n 1
