@@ -40,7 +40,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 SITE_ID = 1
 
-WEBSITE_URL = "http://localhost:8000"
+WEBSITE_URL = os.environ.get("WEBSITE_URL")
 
 CHANNEL_LAYERS = {
     "default": {
@@ -71,12 +71,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated"),
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
-]
-
+CORS_ORIGINS_WHITELIST = CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS = eval(os.environ.get("CORS_ALLOWED_ORIGINS"))
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,

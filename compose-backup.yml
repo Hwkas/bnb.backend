@@ -37,5 +37,6 @@ volumes:
 
 
 # docker container rm -f $(docker container ls -aq)
+# docker rmi $(docker images -q)
 # docker-compose exec api python manage.py migrate
 # docker-compose exec api cat -v -e entrypoint.sh | head -n 1

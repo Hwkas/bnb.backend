@@ -1,18 +1,6 @@
 
 
 services:
-  api:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    # mounting all the file in bnb.backend to app dir as my workdir for docker is app
-    volumes:
-      - .:/app
-    ports:
-      - 8000:8000
-    env_file:
-      - .env.dev
-    depends_on:
-      - db
   db:
     image: postgres:16.3-alpine3.18
     # mounting the below created volume to /var/lib/postgresql/data/,
@@ -20,22 +8,40 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - .env.dev
-  # ui:
-  #   build: ./bnb.frontend
-  #   command: npm run dev
-  #   # mounting all the file in bnb.frontend to app dir as my workdir for docker is app
-  #   volumes:
-  #     - ./bnb.frontend:/app
-  #   ports:
-  #     - 3000:3000
+      - ./.env.dev 
+
+  daphne:
+    build: .
+    command: daphne --bind 0.0.0.0 -p 8002 djangobnb.asgi:application
+    ports:
+      - 8002:8002
+    volumes:
+      - .:/app
+    env_file:
+      - ./.env.dev
+
+  api:
+    build: .
+    command: gunicorn djangobnb.wsgi:application --bind 0.0.0.0:8000
+    # mounting all the file in bnb.backend to app dir as my workdir for docker is app
+    volumes:
+      - .:/app
+    expose:
+      - 8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+      - daphne
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - api
 
 
 # here creating a docker volume
 volumes:
   postgres_data:
-
-
-# docker container rm -f $(docker container ls -aq)
-# docker-compose exec api python manage.py migrate
-# docker-compose exec api cat -v -e entrypoint.sh | head -n 1
