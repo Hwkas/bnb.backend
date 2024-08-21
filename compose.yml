@@ -26,6 +26,7 @@ services:
     # mounting all the file in bnb.backend to app dir as my workdir for docker is app
     volumes:
       - .:/app
+      - media:/app/media/
     expose:
       - 8000
     env_file:
@@ -36,8 +37,11 @@ services:
 
   nginx:
     build: ./nginx
+    volumes:
+      - ./static/:/app/static/
+      - media:/app/media/
     ports:
-      - 1337:80
+      - 1337:80 # host:container host is my mac, container is docker container in this case it is nginx.
     depends_on:
       - api
 
@@ -45,3 +49,4 @@ services:
 # here creating a docker volume
 volumes:
   postgres_data:
+  media:

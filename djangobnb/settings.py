@@ -66,12 +66,15 @@ ACCOUNT_EMAIL_VERIFICATION = None
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication"
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated"),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 
-CORS_ORIGINS_WHITELIST = CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS = eval(os.environ.get("CORS_ALLOWED_ORIGINS"))
+CORS_ORIGINS_WHITELIST = CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS = eval(
+    os.environ.get("CORS_ALLOWED_ORIGINS")
+)
+
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_HTTPONLY": False,
@@ -195,6 +198,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static/"
 # my settings
 ##################
 MEDIA_URL = "media/"
