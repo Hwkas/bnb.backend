@@ -1,15 +1,15 @@
+from channels.db import database_sync_to_async
+from channels.middleware import BaseMiddleware
+
 from django.contrib.auth.models import AnonymousUser
 
 from rest_framework_simplejwt.tokens import AccessToken
-
-from channels.db import database_sync_to_async
-from channels.middleware import BaseMiddleware
 
 from accounts.models import User
 
 
 @database_sync_to_async
-def get_user(token_key):
+def get_user(token_key) -> User:
     try:
         token = AccessToken(token_key)
         user_id = token.payload.get("user_id")

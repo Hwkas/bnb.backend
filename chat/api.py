@@ -2,16 +2,16 @@ from django.http import JsonResponse
 
 from rest_framework.decorators import api_view
 
-from .models import Conversation, ConversationMessage
+from .models import Conversation
 from .searilizers import (
-    ConversationListSearilizer,
     ConversationDetailSearilizer,
+    ConversationListSearilizer,
     ConversationMessageSearilizer,
 )
 
 
 @api_view(["GET"])
-def conversations_list(request):
+def conversations_list(request) -> JsonResponse:
     searilizer = ConversationListSearilizer(
         request.user.conversations.all(),
         many=True,
@@ -20,7 +20,7 @@ def conversations_list(request):
 
 
 @api_view(["GET"])
-def conversations_detail(request, pk):
+def conversations_detail(request, pk: int) -> JsonResponse:
     conversation = request.user.conversations.get(pk=pk)
 
     conversation_searilizer = ConversationDetailSearilizer(conversation, many=False)
@@ -37,7 +37,7 @@ def conversations_detail(request, pk):
 
 
 @api_view(["GET"])
-def conversations_start(request, user_id):
+def conversations_start(request, user_id: int) -> JsonResponse:
     conversations = Conversation.objects.filter(users__id__in=[request.user.id]).filter(
         users__id__in=[user_id]
     )

@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from .models import Conversation, ConversationMessage
 from accounts.searilizers import UserDetailSearilizer
+
+from .models import Conversation, ConversationMessage
 
 
 class ConversationListSearilizer(serializers.ModelSerializer):

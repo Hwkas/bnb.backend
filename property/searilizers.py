@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from .models import Property, Reservation
 from accounts.searilizers import UserDetailSearilizer
+
+from .models import Property, Reservation
 
 
 class PropertyListSearilizer(serializers.ModelSerializer):

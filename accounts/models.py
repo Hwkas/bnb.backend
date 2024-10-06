@@ -1,10 +1,8 @@
-# lib import
 import uuid
 
-# django imports
-from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.db import models
 
 
 class CustomUserManager(UserManager):
@@ -61,5 +59,5 @@ class User(AbstractBaseUser, PermissionsMixin):
         "name",
     ]
 
-    def avatar_url(self):
+    def avatar_url(self) -> str:
         return f"{settings.WEBSITE_URL}{self.avatar.url}" if self.avatar else ""

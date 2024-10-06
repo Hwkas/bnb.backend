@@ -1,5 +1,5 @@
+from django.db.models import BooleanField, Case, Q, When
 from django.http import JsonResponse
-from django.db.models import BooleanField, Case, When, Q
 
 from rest_framework.decorators import (
     api_view,
@@ -8,11 +8,11 @@ from rest_framework.decorators import (
 )
 from rest_framework_simplejwt.tokens import AccessToken
 
-from .models import Property, Reservation
 from .forms import PropertyForm
+from .models import Property, Reservation
 from .searilizers import (
-    PropertyListSearilizer,
     PropertyDetailSearilizer,
+    PropertyListSearilizer,
     ReservationsListSearilizer,
 )
 
@@ -20,7 +20,7 @@ from .searilizers import (
 @api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
-def properties_list(request):
+def properties_list(request) -> JsonResponse:
     try:
         token = request.META.get("HTTP_AUTHORIZATION").split("Bearer ")[1]
         token = AccessToken(token)
@@ -101,7 +101,7 @@ def properties_list(request):
 
 
 @api_view(["POST", "FILES"])
-def create_property(request):
+def create_property(request) -> JsonResponse:
     form = PropertyForm(request.POST, request.FILES)
 
     if form.is_valid():
@@ -118,14 +118,14 @@ def create_property(request):
 @api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
-def property_detail(request, pk):
+def property_detail(request, pk: int) -> JsonResponse:
     property = Property.objects.get(pk=pk)
     searilizer = PropertyDetailSearilizer(property, many=False)
     return JsonResponse(searilizer.data)
 
 
 @api_view(["POST"])
-def book_property(request, pk):
+def book_property(request, pk: int) -> JsonResponse:
     try:
         start_date = request.POST.get("start_date", "")
         end_date = request.POST.get("end_date", "")
@@ -153,14 +153,14 @@ def book_property(request, pk):
 @api_view(["GET"])
 @authentication_classes([])
 @permission_classes([])
-def property_reservations(request, pk):
+def property_reservations(request, pk: int) -> JsonResponse:
     reservations = Reservation.objects.filter(property__id=pk)
     searilizer = ReservationsListSearilizer(reservations, many=True)
     return JsonResponse(searilizer.data, safe=False)
 
 
 @api_view(["POST"])
-def toggle_favourite(request, pk):
+def toggle_favourite(request, pk: int) -> JsonResponse:
     property = Property.objects.get(pk=pk)
 
     if request.user in property.favourited.all():

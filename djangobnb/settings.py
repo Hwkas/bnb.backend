@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-from pathlib import Path
-
 # my imports
 import os
+
 from datetime import timedelta
+from pathlib import Path
+
+
 # Loading env variables from env file
 # from dotenv import load_dotenv
 # load_dotenv()
