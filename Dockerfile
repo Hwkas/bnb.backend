@@ -14,9 +14,9 @@ RUN apk update && apk add --no-cache netcat-openbsd
 RUN pip install --upgrade pip
 
 # copying only requirements.txt as we the mounting the current dir to the container
-COPY requirements.txt .
+COPY requirements $app
 
-RUN pip install -r requirements.txt
+RUN pip install -r prod.txt
 
 COPY entrypoint.sh .
 # The below two command are used to covert the file in LF format
