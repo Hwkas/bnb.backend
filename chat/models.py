@@ -28,12 +28,12 @@ class ConversationMessage(models.Model):
         on_delete=models.CASCADE,
     )
     body = models.TextField()
-    send_to = models.ForeignKey(
+    recipient = models.ForeignKey(
         User,
         related_name="received_messages",
         on_delete=models.CASCADE,
     )
-    created_by = models.ForeignKey(
+    sender = models.ForeignKey(
         User,
         related_name="sent_messages",
         on_delete=models.CASCADE,

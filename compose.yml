@@ -13,8 +13,8 @@ services:
   daphne:
     build: .
     command: daphne --bind 0.0.0.0 -p 8002 djangobnb.asgi:application
-    ports:
-      - 8002:8002
+    expose:
+      - 8002
     volumes:
       - .:/app
     env_file:

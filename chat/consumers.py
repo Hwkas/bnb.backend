@@ -29,20 +29,20 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     @sync_to_async
-    def save_message(self, *, conversation_id, body, sent_to_id):
+    def save_message(self, *, conversation_id, body, recipient_id):
         ConversationMessage.objects.create(
             conversation_id=conversation_id,
             body=body,
-            send_to_id=sent_to_id,
-            created_by=self.scope.get("user"),
+            recipient_id=recipient_id,
+            sender=self.scope.get("user"),
         )
 
-    async def receive(self, text_data=None):
+    async def receive(self, *, text_data=None):
         text_data = json.loads(text_data)
 
         data = text_data.get("data", {})
         conversation_id = data.get("conversation_id")
-        sent_to_id = data.get("sent_to_id")
+        recipient_id = data.get("recipient_id")
         name = data.get("name")
         body = data.get("body")
 
@@ -56,7 +56,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         await self.save_message(
-            conversation_id=conversation_id, body=body, sent_to_id=sent_to_id
+            conversation_id=conversation_id, body=body, recipient_id=recipient_id
         )
 
     async def chat_message(self, event):
