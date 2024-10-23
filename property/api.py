@@ -1,4 +1,10 @@
-from django.db.models import BooleanField, Case, Q, When
+from django.db.models import (
+    Case,
+    Count,
+    IntegerField,
+    Q,
+    When,
+)
 from django.http import JsonResponse
 
 from rest_framework.decorators import (
@@ -89,10 +95,11 @@ def properties_list(request) -> JsonResponse:
 
     if user_id:
         properties = properties.annotate(
-            is_favourite=Case(
-                When(favourited__id=user_id, then=True),
-                default=False,
-                output_field=BooleanField(),
+            is_favourite=Count(
+                Case(
+                    When(favourited__id=user_id, then=1),
+                    output_field=IntegerField(),
+                )
             )
         )
 
