@@ -26,4 +26,5 @@ urlpatterns = [
     path("api/properties/", include("property.urls")),
     path("api/accounts/", include("accounts.urls")),
     path("api/chat/", include("chat.urls")),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("explorer/", include("explorer.urls")),
+]

@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "corsheaders",
+    "explorer",
     #
     # my apps
     "chat",
@@ -164,6 +165,32 @@ DATABASES = {
     }
 }
 
+# Django Sql Explorer configs
+EXPLORER_CONNECTIONS = {"Default": "default"}
+EXPLORER_DEFAULT_CONNECTION = "default"
+
+EXPLORER_SQL_BLACKLIST = (
+    # DML
+    "COMMIT",
+    "DELETE",
+    "INSERT",
+    "MERGE",
+    "REPLACE",
+    "ROLLBACK",
+    "SET",
+    "START",
+    "UPDATE",
+    "UPSERT",
+    # DDL
+    "ALTER",
+    "CREATE",
+    "DROP",
+    "RENAME",
+    "TRUNCATE",
+    # DCL
+    "GRANT",
+    "REVOKE",
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
