@@ -79,10 +79,9 @@ docstring-code-line-length = "dynamic"
 
 [tool.ruff.lint.isort]
 known-first-party = [
-    "a_home",
-    "a_users"
+    "app"
 ]
-#known-third-party = ["django", "dj_rest_auth", "rest_framework", "rest_framework_simplejwt"]
+#known-third-party = ["django", "rest_framework"]
 classes = ["SVC"]
 force-wrap-aliases = true
 combine-as-imports = true
@@ -96,8 +95,6 @@ section-order = [
     "channels",
     "django",
     "rest_framework",
-    "rest_framework_simplejwt",
-    "dj_rest_auth",
     "third-party" , 
     "first-party" , 
     "local-folder"
@@ -107,5 +104,6 @@ section-order = [
 # Group all Django imports into a separate section.
 "django" = ["django"]
 "dj_rest_auth" = ["dj_rest_auth"]
-"rest_framework" = ["rest_framework", "rest_framework_simplejwt"]
+"rest_framework" = ["rest_framework"]
+"oauth2_provider" = ["oauth2_provider"]
 "channels" = ["channels"]
