@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 
+from rest_framework import status
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -28,7 +29,7 @@ def list(request) -> JsonResponse:
     )
 
     searilizer = PropertyListSearilizer(properties, many=True)
-    return JsonResponse({"data": searilizer.data})
+    return JsonResponse(data={"results": searilizer.data})
 
 
 @api_view(["POST", "FILES"])
@@ -39,9 +40,11 @@ def create(request) -> JsonResponse:
         property = form.save(commit=False)
         property.landlord = request.user
         property.save()
-        return JsonResponse({"success": True})
+        return JsonResponse(data={"success": True}, status=status.HTTP_201_CREATED)
     else:
-        return JsonResponse({"error": form.errors.as_json()}, status=400)
+        return JsonResponse(
+            data={"error": form.errors.as_json()}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 @api_view(["GET"])
@@ -55,5 +58,7 @@ def retrieve(request, id: int) -> JsonResponse:
 @api_view(["POST"])
 def toggle_favourite(request, id: int) -> JsonResponse:
     return JsonResponse(
-        {"is_favourite": property_queries.toggle_favourite(id=id, user=request.user)}
+        data={
+            "is_favourite": property_queries.toggle_favourite(id=id, user=request.user)
+        }
     )

@@ -10,8 +10,8 @@ if [ "$DATABASE" = "postgres" ]; then
     echo "The database is up and running :-)"
 fi
 
-python manage.py migrate
+python src/manage.py migrate
 
-python manage.py collectstatic --noinput
+python src/manage.py collectstatic --noinput
 
 exec "$@"

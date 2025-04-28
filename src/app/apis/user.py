@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 
+from rest_framework import status
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -55,7 +56,7 @@ def register(request) -> JsonResponse:
     respone = oauth_tasks.generate_access_token_response(
         client_id=client_id, grant_type=grant_type, user=user
     )
-    return JsonResponse(respone, safe=False)
+    return JsonResponse(data=respone, status=status.HTTP_201_CREATED)
 
 
 @api_view(["GET"])
@@ -63,7 +64,7 @@ def register(request) -> JsonResponse:
 @permission_classes([])
 def get(request, id: int) -> JsonResponse:
     searilizer = UserDetailSearilizer(user_queries.get(id=id), many=False)
-    return JsonResponse(searilizer.data, safe=False)
+    return JsonResponse(data=searilizer.data)
 
 
 @api_view(["POST"])
@@ -99,7 +100,7 @@ def login(request) -> JsonResponse:
     respone = oauth_tasks.generate_access_token_response(
         client_id=client_id, grant_type=grant_type, username=username, password=password
     )
-    return JsonResponse(respone, safe=False)
+    return JsonResponse(data=respone)
 
 
 @api_view(["POST"])
@@ -123,4 +124,4 @@ def token_refresh(request) -> JsonResponse:
     respone = oauth_tasks.generate_token_refresh_response(
         client_id=client_id, grant_type=grant_type, refresh_token=refresh_token
     )
-    return JsonResponse(respone, safe=False)
+    return JsonResponse(data=respone)

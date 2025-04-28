@@ -148,17 +148,18 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "static/"
-# my settings
-##################
+
+
+# Media files
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media/"
-##################
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -202,12 +203,14 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_URL = "/admin/login/"
 
+
 # Daphne
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
     }
 }
+
 
 # Django Sql Explorer
 EXPLORER_CONNECTIONS = {"Default": "default"}
@@ -235,6 +238,7 @@ EXPLORER_SQL_BLACKLIST = (
     "GRANT",
     "REVOKE",
 )
+
 
 # app
 WEBSITE_URL = os.environ.get("WEBSITE_URL")

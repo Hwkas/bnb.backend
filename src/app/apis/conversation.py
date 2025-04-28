@@ -16,7 +16,7 @@ def list(request) -> JsonResponse:
         many=True,
         context={"username": request.user.username},
     )
-    return JsonResponse(searilizer.data, safe=False)
+    return JsonResponse(data={"results": searilizer.data})
 
 
 @api_view(["GET"])
@@ -26,11 +26,10 @@ def detail(request, id: int) -> JsonResponse:
     conversation_searilizer = ConversationListSearilizer(conversation, many=False)
     messages_searilizer = MessageSearilizer(conversation.messages.all(), many=True)
     return JsonResponse(
-        {
+        data={
             "conversation": conversation_searilizer.data,
             "messages": messages_searilizer.data,
         },
-        safe=False,
     )
 
 
@@ -44,4 +43,4 @@ def start(request, user_id: int) -> JsonResponse:
         conversation = conversation_queries.create(
             user_id1=user_id, user_id2=request.user.id
         )
-    return JsonResponse({"success": True, "conversation_id": conversation.id})
+    return JsonResponse(data={"conversation_id": conversation.id})

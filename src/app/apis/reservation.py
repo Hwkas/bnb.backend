@@ -2,6 +2,7 @@ from datetime import date
 
 from django.http import JsonResponse
 
+from rest_framework import status
 from rest_framework.decorators import (
     api_view,
     permission_classes,
@@ -27,7 +28,7 @@ def list(request) -> JsonResponse:
         property_id=request.GET.get("property_id"),
     )
     searilizer = ReservationsListSearilizer(reservations, many=True)
-    return JsonResponse(searilizer.data, safe=False)
+    return JsonResponse(data={"results": searilizer.data})
 
 
 @api_view(["POST"])
@@ -88,4 +89,4 @@ def create(request, property_id: int) -> JsonResponse:
         total_price=total_price,
         patron_id=user_id,
     )
-    return JsonResponse({"success": True})
+    return JsonResponse(data={"success": True}, status=status.HTTP_201_CREATED)

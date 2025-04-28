@@ -18,10 +18,10 @@ COPY requirements $app
 
 RUN pip install -r prod.txt
 
-COPY entrypoint.sh .
-# The below two command are used to covert the file in LF format
-RUN dos2unix entrypoint.sh
-# RUN sed -i 's/\r$//g' entrypoint.sh
-RUN chmod +x entrypoint.sh
+# COPY deploy/api/entrypoint.sh .
+# # # # The below two command are used to covert the file in LF format
+# RUN dos2unix entrypoint.sh
+# # # # RUN sed -i 's/\r$//g' entrypoint.sh
+# RUN chmod +x entrypoint.sh
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./deploy/api/entrypoint.sh" ]

@@ -1,3 +1,4 @@
+name: airBnbClone
 
 
 services:
@@ -8,38 +9,47 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
-      - ./.env.dev 
+      - ../.env.dev
+
 
   daphne:
-    build: .
+    build:
+      context: ../.
+      dockerfile: deploy/api/Dockerfile
     command: daphne --bind 0.0.0.0 -p 8002 djangobnb.asgi:application
     expose:
       - 8002
     volumes:
-      - .:/app
+      - ../:/app
     env_file:
-      - ./.env.dev
+      - ../.env.dev
+
 
   api:
-    build: .
+    build:
+      context: ../.
+      dockerfile: deploy/api/Dockerfile
     command: gunicorn djangobnb.wsgi:application --bind 0.0.0.0:8000
+    # tail -f /dev/null
+    # gunicorn djangobnb.wsgi:application --bind 0.0.0.0:8000
     # mounting all the file in bnb.backend to app dir as my workdir for docker is app
     volumes:
-      - .:/app
-      - media:/app/media/
+      - ../:/app
+      - ../src/media:/app/src/media/
     expose:
       - 8000
     env_file:
-      - ./.env.dev
+      - ../.env.dev
     depends_on:
       - db
       - daphne
 
+
   nginx:
-    build: ./nginx
+    build: nginx
     volumes:
-      - ./static/:/app/static/
-      - media:/app/media/
+      - ../src/static/:/app/src/static/
+      - ../src/media:/app/src/media/
     ports:
       - 1337:80 # host:container host is my mac, container is docker container in this case it is nginx.
     depends_on:
@@ -50,3 +60,4 @@ services:
 volumes:
   postgres_data:
   media:
+
