@@ -15,6 +15,12 @@ from app.searilizers import PropertyDetailSearilizer, PropertyListSearilizer
 @api_view(["GET"])
 @permission_classes([])
 def list(request) -> JsonResponse:
+    favourited = (
+        None
+        if request.GET.get("favourited") is None
+        else str(request.GET.get("favourited")).lower() == "true"
+    )
+
     properties = property_queries.filter(
         user_id=request.user.id,
         bedrooms=request.GET.get("numBedrooms"),
@@ -23,7 +29,7 @@ def list(request) -> JsonResponse:
         country=request.GET.get("country"),
         category=request.GET.get("category"),
         landlord_id=request.GET.get("landlord_id"),
-        favourited=request.GET.get("favourited"),
+        favourited=favourited,
         check_in_date=request.GET.get("checkInDate"),
         check_out_date=request.GET.get("checkOutDate"),
     )
